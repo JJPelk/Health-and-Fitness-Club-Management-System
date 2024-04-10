@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Set Health Metrics</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+
+<h2>Set Health Metrics</h2>
+<form action="/setHealthMetrics" method="post">
+    <select name="metricType" id="metricType">
+        <option value="">Select Metric Type</option>
+        <option value="Blood pressure">Blood Pressure (mm Hg)</option>
+        <option value="BMI">BMI</option>
+        <option value="Cholesterol">Cholesterol (mg)</option>
+    </select>
+    <input type="text" name="metricValue" id="metricValue" placeholder="Metric Value" required pattern="^\d+(/|.)?\d*$|^\d*[/]\d+$" title="Please enter a valid value. For blood pressure, use 'Systolic/Diastolic pressure' e.g - 120/80">
+    <input type="date" name="dateRecorded" placeholder="Date Recorded" required>
+    <button type="submit">Set Metric</button>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    $('#metricType').change(function() {
+        // Additional logic can be added here if needed
+    });
+});
+</script>
+
+</body>
+</html>

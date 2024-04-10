@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+    <h2>Admin Panel</h2>
+
+    <h3>Classes</h3>
+    {{#each classes}}
+        <div>
+            <p>{{this.classname}} - {{this.datetime}}</p>
+            <!-- Delete Form -->
+            <form action="/deleteClass" method="POST">
+                <input type="hidden" name="classId" value="{{this.classid}}">
+                <button type="submit">Delete</button>
+            </form>
+        </div>
+    {{/each}}
+
+    <h3>Equipment</h3>
+    {{#each equipment}}
+        <p>Room {{this.roomid}} - Last Checked: {{this.lastchecked}}</p>
+    {{/each}}
+</body>
+</html>

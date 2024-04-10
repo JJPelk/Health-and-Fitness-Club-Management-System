@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trainer Registration</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script>
+        $(function() {
+            $("#availabilityDate").datepicker({ dateFormat: 'yy-mm-dd' });
+        });
+    </script>
+</head>
+<body>
+
+<h2>Trainer Registration</h2>
+<form id="trainerRegistrationForm" action="/registerAsTrainer" method="post">
+    <input type="text" name="specialization" placeholder="Specialization" required>
+    <input type="text" id="availabilityDate" name="availabilityDate" placeholder="YYYY-MM-DD" autocomplete="off" required>
+    <input type="time" name="availabilityTime" required>
+    <input type="text" name="className" placeholder="Class Name" required>
+    <input type="number" name="roomID" placeholder="Room ID" required>
+    <label for="groupSession">Is this a group session?</label>
+    <input type="checkbox" id="groupSession" name="groupSession">
+    <button type="submit">Register as Trainer</button>
+</form>
+
+</body>
+</html>

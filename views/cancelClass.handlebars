@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cancel Class</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+
+<h2>Cancel a Class</h2>
+<p>Select a class to cancel:</p>
+
+{{#if classes.length}}
+    <form id="cancelClassForm" action="/cancelClass" method="post">
+        <select id="classSelect" name="classId" required>
+            {{#each classes}}
+            <option value="{{this.classid}}">{{this.classname}} - {{this.datetime}}</option>
+            {{/each}}
+        </select>
+        <button type="submit">Cancel Class</button>
+    </form>
+{{else}}
+    <p>No classes to display.</p>
+{{/if}}
+
+</body>
+</html>

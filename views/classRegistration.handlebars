@@ -1,0 +1,53 @@
+<!-- Inside classRegistration.handlebars -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Class Registration</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+
+</head>
+<body>
+    <h1>Class Registration</h1>
+    <form id="classRegistrationForm" action="/registerForClass" method="post">
+        <label for="classSelect">Select a class:</label>
+        <select id="classSelect" name="classId" required>
+            {{#each classes}}
+            <option value="{{this.classid}}">{{this.classname}} with {{this.firstname}} {{this.lastname}} at {{this.datetime}}</option>
+            {{/each}}
+        </select>
+        <label for="cardNumber">Card Number:</label>
+        <input type="text" id="cardNumber" name="cardNumber" required pattern="\d{16}" title="Card number should be 16 digits">
+        <button type="submit">Register</button>
+    </form>
+
+    <h2>Cancel Class Registration</h2>
+    <form id="cancelClassRegistrationForm" action="/cancelClassRegistration" method="post">
+        <label for="registeredClassesSelect">Select a registered class:</label>
+        <select id="registeredClassesSelect" name="registrationId" required>
+        <!-- Options will be populated by server-side code -->
+        </select>
+        <button type="submit">Cancel Registration</button>
+</form>
+<script>
+// This should be at the bottom of your classRegistration.handlebars file
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const response = await fetch('/fetchRegisteredClasses');
+    if (!response.ok) {
+      throw new Error('Failed to fetch registered classes');
+    }
+    const classes = await response.json();
+    const selectElement = document.getElementById('registeredClassesSelect');
+    classes.forEach(cls => {
+      const option = document.createElement('option');
+      option.value = cls.registrationid;
+      option.textContent = `${cls.classname} at ${new Date(cls.datetime).toLocaleString()}`;
+      selectElement.appendChild(option);
+    });
+  } catch (error) {
+    console.error('Error populating registered classes', error);
+  }
+});
+</script>
+</body>
+</html>

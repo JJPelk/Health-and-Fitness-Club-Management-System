@@ -1,0 +1,23 @@
+<!-- addClass.handlebars -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Class</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+
+<h2>Add a New Class</h2>
+
+<form action="/addClass" method="post">
+    <input type="text" name="classname" placeholder="Class Name" required>
+    <input type="number" name="roomID" placeholder="Room ID" required>
+    <input type="date" name="date" placeholder="Date" required>
+    <input type="time" name="time" placeholder="Time" required>
+    <button type="submit">Create Class</button>
+    <label for="groupSession">Is this a group session?</label>
+    <input type="checkbox" id="groupSession" name="groupSession">
+</form>
+
+</body>
+</html>

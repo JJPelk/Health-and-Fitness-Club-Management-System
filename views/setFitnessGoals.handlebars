@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Set Fitness Goals</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="/styles/styles.css">
+</head>
+<body>
+
+<h2>Set Fitness Goals</h2>
+<form id="fitnessGoalsForm" action="/setFitnessGoals" method="post">
+    <select name="goalType" id="goalType">
+        <option value="">Select Goal Type</option>
+        <option value="Strength">Strength Goals</option>
+        <option value="Weight">Weight Goals</option>
+    </select>
+    <!-- Strength Goals Inputs -->
+    <div id="strengthGoals" style="display:none;">
+        <input type="text" name="exerciseType" placeholder="Exercise Type">
+        <input type="number" name="currentStrengthWeight" placeholder="Current Strength Weight">
+        <input type="number" name="goalStrengthWeight" placeholder="Goal Strength Weight">
+    </div>
+    <!-- Weight Goals Inputs -->
+    <div id="weightGoals" style="display:none;">
+        <input type="number" name="currentWeight" placeholder="Current Weight">
+        <input type="number" name="desiredWeight" placeholder="Desired Weight">
+    </div>
+    <button type="submit">Set Goal</button>
+</form>
+
+<script>
+$(document).ready(function() {
+    $('#goalType').change(function() {
+        var selectedGoal = $(this).val();
+        $('#strengthGoals').hide();
+        $('#weightGoals').hide();
+        if (selectedGoal == 'Strength') {
+            $('#strengthGoals').show();
+        } else if (selectedGoal == 'Weight') {
+            $('#weightGoals').show();
+        }
+    });
+});
+</script>
+
+</body>
+</html>

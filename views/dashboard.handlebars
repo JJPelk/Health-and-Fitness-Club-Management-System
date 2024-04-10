@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <style>
+        #menu-icon { cursor: pointer; font-size: 24px; }
+        .menu { display: none; position: absolute; background-color: #2b2d31; min-width: 160px; box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); padding: 12px 16px; z-index: 100; }
+        .show { display: block; }
+        .draggable-panel { background-color: #2b2d31; margin-bottom: 20px; padding: 10px; border-radius: 4px; }
+        .panel-header { cursor: move; background-color: #6a4ca5; padding: 5px; margin: -10px; margin-bottom: 10px; border-radius: 4px 4px 0 0; }
+        ul { list-style-type: none; margin: 0; padding: 0; }
+        li { margin-bottom: 10px; padding: 5px; border: 1px solid #2b2d31; border-radius: 4px; }
+        .editable { cursor: text; background-color: #2b2d31; padding: 2px 4px; border-radius: 2px; display: inline-block; }
+        .edit-button, .confirm-edit, .delete-fitness-goal, .delete-health-metric { cursor: pointer; margin-left: 10px; }
+        .confirm-edit { display: none; }
+    </style>
+</head>
+<body>
+    <h1>User Dashboard</h1>
+    <div class ="navbar">
+        <div id="menu-icon" onclick="toggleMenu()">☰</div>
+    </div>
+    <div id="menu" class="menu">
+        <p><a href="/updateProfile">Update Profile</a></p>
+        <p><a href="/setFitnessGoals">Set Fitness Goals</a></p>
+        <p><a href="/setHealthMetrics">Set Health Metrics</a></p>
+        <p><a href="/registerAsTrainer">Trainer Registration</a></p>
+        <p><a href="/schedule">Manage Schedule</a></p>
+    </div>
+
+<!-- Adjusted Exercise Routines Panel for Strength Goals -->
+    <div class="draggable-panel">
+        <div class="panel-header">Exercise Routines (Strength Goals)</div>
+        <ul>
+            {{#each fitnessGoals}}
+                {{#if (eq this.goaltype "Strength")}}
+                <li id="fitness-goal-{{this.goalid}}">
+                    {{this.exercisetype}}: 
+                    Current Strength: <span class="editable" data-type="currentstrengthweight" data-id="{{this.goalid}}" contenteditable="false">{{this.currentstrengthweight}}</span> lbs, 
+                    Goal: <span class="editable" data-type="goalstrengthweight" data-id="{{this.goalid}}" contenteditable="false">{{this.goalstrengthweight}}</span> lbs 
+                    <span class="edit-button" data-goal-id="{{this.goalid}}">Edit</span>
+                    <span class="confirm-edit" data-goal-id="{{this.goalid}}">Confirm</span>
+                    <span class="delete-fitness-goal" data-goal-id="{{this.goalid}}">Delete</span>
+                </li>
+                {{/if}}
+            {{/each}}
+        </ul>
+    </div>
+
+<!-- Health Statistics Panel -->
+<div class="draggable-panel">
+    <div class="panel-header">Health Statistics</div>
+    <ul>
+        <li>Weight Goals</li>
+        {{#each fitnessGoals}}
+            {{#if (eq this.goaltype "Weight")}}
+            <li id="weight-goal-{{this.goalid}}">
+                Current Weight: <span class="editable" data-type="currentweight" data-id="{{this.goalid}}" contenteditable="false">{{this.currentweight}}</span> lbs, 
+                Desired Weight: <span class="editable" data-type="desiredweight" data-id="{{this.goalid}}" contenteditable="false">{{this.desiredweight}}</span> lbs
+                <span class="edit-button" data-goal-id="{{this.goalid}}">Edit</span>
+                <span class="confirm-edit" data-goal-id="{{this.goalid}}">Confirm</span>
+                <span class="delete-fitness-goal" data-goal-id="{{this.goalid}}">Delete</span>
+            </li>
+            {{/if}}
+        {{/each}}
+        
+        <li>Health Metrics</li>
+        {{#each healthMetrics}}
+        <li id="health-metric-{{this.metricid}}">
+            {{this.metrictype}}: <span class="editable" data-type="metricvalue" data-id="{{this.metricid}}" contenteditable="false">{{this.metricvalue}}</span>
+            <span class="edit-button" data-metric-id="{{this.metricid}}">Edit</span>
+            <span class="confirm-edit" data-metric-id="{{this.metricid}}">Confirm</span>
+            <span class="delete-health-metric" data-metric-id="{{this.metricid}}">Delete</span>
+        </li>
+        {{/each}}
+    </ul>
+</div>
+
+        <!-- Fitness Achievements Panel -->
+        <div class="draggable-panel">
+            <div class="panel-header">Fitness Achievements</div>
+            <ul>
+                {{#each fitnessAchievements}}
+                <li id="achievement-{{this.achievementid}}">
+                    Type: {{this.achievementtype}}, 
+                    {{#if this.exercisetype}}Exercise: {{this.exercisetype}},{{/if}}
+                    Value: {{this.achievementvalue}}, 
+                    Date: {{this.achievementdate}}
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+
+<script>
+    $(function() {
+        $(".draggable-panel").draggable({
+            handle: ".panel-header"
+        });
+
+        $(".edit-button").click(function() {
+            $(this).siblings('.editable').attr('contenteditable', true);
+            $(this).hide();
+            $(this).nextAll('.confirm-edit').first().show();
+            $(".draggable-panel").draggable('disable');
+        });
+
+        $(".confirm-edit").click(function() {
+            var id = $(this).data("goal-id") || $(this).data("metric-id");
+            var updates = [];
+            $(this).siblings('.editable').each(function() {
+                var type = $(this).data('type');
+                var newValue = $(this).text().trim();
+                updates.push({type, newValue});
+            });
+
+            updates.forEach(update => {
+                var endpoint = (update.type.includes('strength') || update.type.includes('weight')) ? '/updateFitnessGoal' : '/updateHealthMetric';
+                $.ajax({
+                    url: endpoint,
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ id, type: update.type, newValue: update.newValue }),
+                    success: function(response) {
+                        console.log("Update successful for " + update.type);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error updating:", status, error);
+                    }
+                });
+            });
+
+            $(this).siblings('.editable').removeAttr('contenteditable');
+            $(this).hide();
+            $(this).prevAll('.edit-button').first().show();
+            $(".draggable-panel").draggable('enable');
+            alert("Updates sent. Please refresh to see changes.");
+        });
+
+        window.toggleMenu = function() {
+            $("#menu").toggleClass('show');
+        }
+
+        // Delete Fitness Goal
+        $(".delete-fitness-goal").click(function() {
+            var goalId = $(this).data("goal-id");
+            deleteItem("/deleteFitnessGoal", goalId, "Fitness goal deleted successfully.");
+        });
+
+        // Delete Health Metric
+        $(".delete-health-metric").click(function() {
+            var metricId = $(this).data("metric-id");
+            deleteItem("/deleteHealthMetric", metricId, "Health metric deleted successfully.");
+        });
+
+        function deleteItem(endpoint, id, successMessage) {
+            $.ajax({
+                url: endpoint,
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({ id: id }),
+                success: function(result) {
+                    alert(successMessage);
+                    location.reload();
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error deleting:", status, error);
+                    alert("Error deleting item.");
+                }
+            });
+        }
+    });
+</script>
+</body>
+</html>

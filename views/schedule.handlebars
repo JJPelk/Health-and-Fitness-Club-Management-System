@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Schedule</title>
+    <link rel="stylesheet" href="/styles/styles.css">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css' rel='stylesheet' />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js'></script>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js'></script>
+    <style>
+        #calendar {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header-buttons">
+    <h2>Schedule</h2>
+    {{#if isTrainer}}
+        <a href="/addClass"><button id="addClassButton">Add a class</button></a>
+        <a href="/cancelClass"><button id="cancelClassButton">Cancel a class</button></a>
+        <a href="/memberLookup"><button id="memberLookupButton">Member lookup</button></a>
+    {{/if}}
+    {{#if isAdmin}}
+        <a href="/admin"><button id="adminPanelButton">Admin panel</button></a>
+    {{/if}}
+    <a href="/classRegistration"><button id="registerClassButton">Class registration</button></a>
+</div>
+<div id="calendar"></div>
+<!-- Rest of your FullCalendar setup and other scripts -->
+
+<script>
+    $(document).ready(function() {
+        var classes = {{{classes}}}; // Parse the JSON string into JavaScript object
+        // Initialize the calendar
+        $('#calendar').fullCalendar({
+            // Customize your calendar options
+            header: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'month,agendaWeek,agendaDay'
+            },
+            defaultDate: moment().format('YYYY-MM-DD'),
+            navLinks: true, // can click day/week names to navigate views
+            editable: true,
+            eventLimit: true, // allow "more" link when too many events
+            timeZone: 'local',
+            events: classes
+        });
+    });
+</script>
+
+</body>
+</html>
