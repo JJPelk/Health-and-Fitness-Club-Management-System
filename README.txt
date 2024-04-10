@@ -21,8 +21,9 @@ This Health and Fitness Club Management System is designed to cater to the needs
 ## Installation
 
 ### Prerequisites
-- Python 3.8 or higher
-- pip (Python Package Installer)
+- Javascript
+- Node.js
+- npm
 
 ### Setup
 1. Clone the repository to your local machine.
@@ -33,7 +34,7 @@ git clone https://github.com/JJPelk/Health-and-Fitness-Club-Management-System
 
 3. Install the required dependencies using pip
 
-npm install -r requirements.txt
+npm install 
 
 ## Usage
 To run the application, navigate to the project directory and execute:
