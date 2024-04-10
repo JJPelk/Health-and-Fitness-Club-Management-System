@@ -32,7 +32,7 @@ git clone https://github.com/JJPelk/Health-and-Fitness-Club-Management-System
 
 2. Navigate to the cloned directory.
 
-3. Install the required dependencies using pip
+3. Install the required dependencies using npm
 
 npm install 
 
