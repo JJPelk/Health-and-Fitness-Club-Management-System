@@ -36,6 +36,18 @@ git clone https://github.com/JJPelk/Health-and-Fitness-Club-Management-System
 
 npm install 
 
+4. Use the DDL and DML .sql files to generate the database by running them as queries
+
+5. Customize the following code at the top of server.js to set up a connection to your newly created PostgreSQL database:
+"// Set up PostgreSQL connection
+const pool = new Pool({
+  user: 'postgres',
+  host: 'localhost',
+  database: 'A5',
+  password: 'admin',
+  port: 5432,
+});"
+
 ## Usage
 To run the application, navigate to the project directory and execute:
 
