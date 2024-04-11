@@ -125,8 +125,7 @@ app.post('/login', (req, res) => {
 // Profile page
 app.get('/updateProfile', (req, res) => {
     if (req.session.userid) {
-      // You might want to pre-fill the form with the user's current information.
-      // This requires a database query based on `req.session.userid` to fetch user details.
+
       res.render('updateProfile', { layout: false });
     } else {
       res.redirect('/login');
@@ -439,7 +438,7 @@ app.post('/performMemberLookup', async (req, res) => {
     if (!isNaN(searchQuery)) {
       member = await pool.query('SELECT * FROM Members WHERE MemberID = $1', [searchQuery]);
     } else {
-      // Assume the searchQuery is "firstname lastname"
+      
       const [firstname, lastname] = searchQuery.split(' ');
       member = await pool.query('SELECT * FROM Members WHERE FirstName = $1 AND LastName = $2', [firstname, lastname]);
     }
