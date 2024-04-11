@@ -638,7 +638,7 @@ app.post('/cancelClass', async (req, res) => {
     // Cancel the class
     await pool.query('DELETE FROM Classes WHERE ClassID = $1 AND TrainerID = $2', [classId, trainerID]);
 
-    // Optionally, add logic to handle related deletions or notifications
+    
 
     res.redirect('/schedule');
   } catch (error) {
