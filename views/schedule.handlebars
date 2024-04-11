@@ -29,21 +29,21 @@
     <a href="/classRegistration"><button id="registerClassButton">Class registration</button></a>
 </div>
 <div id="calendar"></div>
-<!-- Rest of your FullCalendar setup and other scripts -->
+<!-- Rest FullCalendar setup -->
 
 <script>
     $(document).ready(function() {
         var classes = {{{classes}}}; // Parse the JSON string into JavaScript object
         // Initialize the calendar
         $('#calendar').fullCalendar({
-            // Customize your calendar options
+            // Customize calendar options
             header: {
                 left: 'prev,next today',
                 center: 'title',
                 right: 'month,agendaWeek,agendaDay'
             },
             defaultDate: moment().format('YYYY-MM-DD'),
-            navLinks: true, // can click day/week names to navigate views
+            navLinks: true, // click day/week names to navigate views
             editable: true,
             eventLimit: true, // allow "more" link when too many events
             timeZone: 'local',
