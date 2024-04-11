@@ -23,7 +23,6 @@ const PORT = process.env.PORT || 3000;
 const hbs = engine({
   helpers: {
     eq: (v1, v2) => v1 === v2,
-    // You can define other helpers here as needed
   }
 });
 
@@ -264,7 +263,7 @@ app.post('/updateFitnessGoal', async (req, res) => {
   }
 
   const userid = req.session.userid;
-  const { id, type, newValue } = req.body; // Assuming type can be 'currentstrengthweight', 'goalstrengthweight', 'currentweight', or 'desiredweight'
+  const { id, type, newValue } = req.body; 
   let columnToUpdate = type;
   let goalType;
 
@@ -337,7 +336,7 @@ app.post('/deleteFitnessGoal', (req, res) => {
       return res.status(401).send("Not authorized");
   }
 
-  const { id } = req.body; // Assuming you're sending the goal ID as 'id'
+  const { id } = req.body; 
   const userid = req.session.userid;
 
   const sql = "DELETE FROM FitnessGoals WHERE GoalID = $1 AND MemberID = $2";
@@ -357,7 +356,7 @@ app.post('/deleteHealthMetric', (req, res) => {
       return res.status(401).send("Not authorized");
   }
 
-  const { id } = req.body; // Assuming you're sending the metric ID as 'id'
+  const { id } = req.body; 
   const userid = req.session.userid;
 
   const sql = "DELETE FROM HealthMetrics WHERE MetricID = $1 AND MemberID = $2";
@@ -452,7 +451,7 @@ app.post('/performMemberLookup', async (req, res) => {
     // Redirect to the member's dashboard
     const memberID = member.rows[0].memberid;
     req.session.viewedMemberID = memberID; // Temporarily store this for viewing their dashboard
-    res.redirect('/viewMemberDashboard'); // A route you'll create for viewing another member's dashboard
+    res.redirect('/viewMemberDashboard'); 
   } catch (error) {
     console.error('Error performing member lookup', error);
     res.status(500).send("Error performing lookup");
@@ -485,7 +484,7 @@ app.get('/viewMemberDashboard', async (req, res) => {
       fitnessGoals: resultsFitnessGoals.rows,
       healthMetrics: resultsHealthMetrics.rows,
       fitnessAchievements: resultsFitnessAchievements.rows,
-      isTrainerViewing: true // You can use this to customize the dashboard for trainers
+      isTrainerViewing: true 
     });
   } catch (error) {
     console.error('Error fetching data for member dashboard', error);
@@ -518,7 +517,7 @@ app.post('/registerForClass', async (req, res) => {
   }
 
   const memberId = req.session.userid;
-  const { classId, cardNumber } = req.body; // Assuming you've added an input for cardNumber in your form
+  const { classId, cardNumber } = req.body; 
 
   try {
       await pool.query('INSERT INTO ClassRegistrations (MemberID, ClassID) VALUES ($1, $2)', [memberId, classId]);
@@ -581,7 +580,7 @@ app.post('/cancelClassRegistration', async (req, res) => {
     return res.status(401).send("Not authorized");
   }
 
-  const { registrationId } = req.body; // You will send the registrationId when submitting the form
+  const { registrationId } = req.body; 
 
   try {
     await pool.query(
@@ -659,7 +658,7 @@ app.post('/deleteClass', async (req, res) => {
   try {
     await pool.query('DELETE FROM Classes WHERE ClassID = $1', [classId]);
 
-    // Optionally, add logic here to handle any cascading deletions or cleanups as needed.
+    
     
     res.redirect('/admin');
   } catch (error) {
